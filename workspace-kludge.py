@@ -12,6 +12,10 @@ class Kludge:
         Notify.init("Workspace Switch Notifier")
 
     def fire_the_kludge(self, data_a, data_b):
+        if self.runs == 0:
+            self.runs += 1
+            return
+
         if self.popup:
             self.popup.close()
 
@@ -71,6 +75,7 @@ class Kludge:
 
     def main(self):
         self.screen.connect("active-workspace-changed", self.fire_the_kludge)
+        self.runs = 0
         self.columns = 3
         self.rows = 4
         self.popup = None
