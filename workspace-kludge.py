@@ -3,6 +3,7 @@
 from gi.repository import Wnck, Gtk, Notify
 from threading import Timer
 import signal, time
+import os
 
 class Kludge:
     def __init__(self):
@@ -35,6 +36,7 @@ class Kludge:
         self.popup = Notify.Notification.new(message)
         self.popup_count += 1
         self.popup.show()
+        self.show_panel_cmd()
         t = Timer(2, self.close_callback)
         t.start()
 
@@ -46,6 +48,7 @@ class Kludge:
         if self.popup:
             self.popup.close()
         self.popup = None
+        self.hide_panel_cmd()
 
         self.popup_count -= 1
         print("close_callback");
@@ -72,6 +75,12 @@ class Kludge:
             string += '-'
         string += '\n'
         return string
+
+    def hide_panel_cmd(self):
+        os.system('xfconf-query -c xfce4-panel -p /panels/panel-1/autohide-behavior -t int -s 2')
+
+    def show_panel_cmd(self):
+        os.system('xfconf-query -c xfce4-panel -p /panels/panel-1/autohide-behavior -t int -s 0')
 
     def main(self):
         self.screen.connect("active-workspace-changed", self.fire_the_kludge)
