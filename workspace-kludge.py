@@ -37,7 +37,7 @@ class Kludge:
         self.popup_count += 1
         self.popup.show()
         self.show_panel_cmd()
-        t = Timer(2, self.close_callback)
+        t = Timer(1, self.close_callback)
         t.start()
 
     def close_callback(self):
